@@ -2,7 +2,7 @@ const axios = require('axios');
 const fs = require('fs');
 const qs = require('querystring');
 
-const loginUrl = 'https://www.terabox.com/account/login';  // Replace with actual TeraBox login URL
+const loginUrl = 'https://www.1024terabox.com/login';  // Replace with actual TeraBox login URL
 
 // Get username and password from environment variables
 const username = process.argv[2];
