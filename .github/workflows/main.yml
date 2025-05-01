@@ -6,7 +6,7 @@ on:
       - main
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight UTC
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC (24 hours)
 
 jobs:
   extract_cookie:
@@ -28,17 +28,17 @@ jobs:
       - name: Extract TeraBox Login Cookie
         id: extract_cookie
         run: |
+          # Run the script with the stored GitHub secrets (username/password)
           node ./terabox-login.js ${{ secrets.TERABOX_USERNAME }} ${{ secrets.TERABOX_PASSWORD }} > terabox_cookie.json
 
       - name: Output cookie JSON
         run: |
           cat terabox_cookie.json
 
-      - name: Commit and push extracted cookie (optional)
+      - name: Commit and push extracted cookie
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
           git add terabox_cookie.json
           git commit -m "Add extracted TeraBox cookie"
-          git push
-          
+          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
